@@ -3,5 +3,6 @@ FactoryGirl.define do
     title "Hamburger"
     description "Description"
     price 1.2
+    type "SingleMeal"
   end
 end

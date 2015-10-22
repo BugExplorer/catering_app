@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151022185455) do
+ActiveRecord::Schema.define(version: 20151022193953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "title",      limit: 45
+    t.integer  "sort_order"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
 
   create_table "dishes", force: :cascade do |t|
     t.string   "title",        limit: 45
@@ -22,10 +29,10 @@ ActiveRecord::Schema.define(version: 20151022185455) do
     t.text     "description"
     t.float    "price"
     t.string   "type",         limit: 45
-    t.integer  "children_ids", default: [], array: true
+    t.integer  "children_ids",            default: [],              array: true
     t.integer  "category_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   add_index "dishes", ["children_ids"], name: "index_dishes_on_children_ids", using: :gin
