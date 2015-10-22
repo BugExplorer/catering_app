@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :dish do
+  factory :single_meal do
     title "Hamburger"
     description "Description"
     price 1.2
