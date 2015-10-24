@@ -1,27 +1,6 @@
 ActiveAdmin.register BusinessLunch do
 
-# See permitted parameters documentation:
-# https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-#
-   permit_params :title, :description, :price, children_ids: []
-# #
-# or
-#
-  # permit_params do
-  #   permitted = [:title, :description, :price]
-  #   permitted << :children_ids
-  #   puts permitted
-  #   permitted
-  # end
-
-  # params[:business_lunch][:children_ids] = Array.wrap(params[:business_lunch][:children_ids]).map!(&:to_i)
-
-
-  # attr_accessor   :names_raw
-
-  # def names_raw
-  #   self.names.join("\n") unless self.names.nil?
-  # end
+  permit_params :title, :description, :price, children_ids: []
 
   form do |f|
     f.inputs "Business Lunch" do
