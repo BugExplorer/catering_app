@@ -1,5 +1,19 @@
 Rails.application.routes.draw do
-  devise_for :admin_users, ActiveAdmin::Devise.config
+  devise_for :users, controllers: { sessions: 'users/sessions',
+                                    registrations: 'users/registrations',
+                                    passwords: 'users/passwords'},
+                     path_names: { sign_in: 'login', sign_out: 'logout' }
+
+  devise_scope :user do
+    get "login", to: "devise/sessions#new"
+    authenticated :user do
+      root :to => 'admin/dashboard#index', as: :authenticated_root
+    end
+    unauthenticated :user do
+      root :to => 'users/sessions#new', as: :unauthenticated_root
+    end
+  end
+
   ActiveAdmin.routes(self)
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
