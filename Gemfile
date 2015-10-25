@@ -14,9 +14,14 @@ gem 'devise', '~> 3.5', '>= 3.5.1'
 
 gem 'aasm', '~> 4.3'
 
+gem 'grape', '~> 0.13.0'
+gem 'grape_logging', '~> 1.1', '>= 1.1.2'
+gem 'grape-swagger', '~> 0.10.2'
+
 group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'
+  gem 'thin'
 end
 
 group :development, :test do
