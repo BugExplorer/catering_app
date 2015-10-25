@@ -5,6 +5,8 @@ class Sprint < ActiveRecord::Base
   validates :started_at, presence: true
   validates :closed_at, presence: true
 
+  belongs_to :daily_ration
+
   aasm column: 'state' do
     state :pending, initial: true
     state :running
