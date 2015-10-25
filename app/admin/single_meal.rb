@@ -7,7 +7,7 @@ ActiveAdmin.register SingleMeal do
       f.input :title
       f.input :description, as: :text, required: false
       f.input :price
-      f.input :category, collection: Category.pluck(:title, :id)
+      f.input :category, as: :select, collection: Category.all
     end
     f.actions
   end
