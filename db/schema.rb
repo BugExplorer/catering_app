@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151024140317) do
+ActiveRecord::Schema.define(version: 20151025102903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,7 +60,17 @@ ActiveRecord::Schema.define(version: 20151024140317) do
     t.datetime "updated_at",                           null: false
   end
 
+  add_index "dishes", ["category_id"], name: "index_dishes_on_category_id", using: :btree
   add_index "dishes", ["children_ids"], name: "index_dishes_on_children_ids", using: :gin
+
+  create_table "sprints", force: :cascade do |t|
+    t.string   "title",      limit: 45
+    t.datetime "started_at"
+    t.datetime "closed_at"
+    t.string   "state"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

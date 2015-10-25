@@ -12,6 +12,8 @@ gem 'turbolinks'
 gem 'activeadmin', github: 'activeadmin'
 gem 'devise', '~> 3.5', '>= 3.5.1'
 
+gem 'aasm', '~> 4.3'
+
 group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'

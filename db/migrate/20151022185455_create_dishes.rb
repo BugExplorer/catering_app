@@ -13,5 +13,6 @@ class CreateDishes < ActiveRecord::Migration
 
     add_index :dishes, [:children_ids],
       name: "index_dishes_on_children_ids", using: :gin
+    add_index :dishes, [:category_id]
   end
 end
