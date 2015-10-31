@@ -6,7 +6,13 @@ module API
       version 'v1', using: :path
 
       resource :sprints do
-        desc "Returns sprints that are running or being closed"
+        desc "Returns sprints that are running or being closed", headers: {
+          "X-Auth-Token" => {
+            description: "User token",
+            required: true
+          }
+        }
+
         get "/" do
           Sprint.all
           # Sprint.where(status: ["running", "closed"])

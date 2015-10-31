@@ -16,12 +16,18 @@ class User < ActiveRecord::Base
     self.authentication_token ||= generate_authentication_token
   end
 
+  def reset_authentication_token
+    # Generate new token after user logs out. Just for security.
+    # I don't think that after log out we'd set token as nil.
+    self.authentication_token = generate_authentication_token
+  end
+
   private
 
-  def generate_authentication_token
-    loop do
-      token = Devise.friendly_token
-      break token unless User.where(authentication_token: token).first
+    def generate_authentication_token
+      loop do
+        token = Devise.friendly_token
+        break token unless User.where(authentication_token: token).first
+      end
     end
-  end
 end

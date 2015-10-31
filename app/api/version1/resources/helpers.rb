@@ -13,14 +13,9 @@ module API
         warden.authenticated?(:account)
       end
 
-      # def authenticate_by_token!
-      #   env['devise.skip_trackable'] = true
-      #   warden.authenticate!(:token_authenticatable, :scope => :account)
-      # end
-
-      def authenticated
-        return true if warden.authenticated?
-        params[:access_token] && @user = User.find_by_authentication_token(params[:access_token])
+      def authenticate_by_token!
+        env['devise.skip_trackable'] = true
+        warden.authenticate!(:token_authenticatable, scope: :user)
       end
 
       def client_ip
