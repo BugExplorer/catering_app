@@ -21,7 +21,7 @@ module API
         desc "Returns daily rations for sprint"
         get "/:id" do
           # if Sprint.find(params[:id]).running? || Sprint.find(params[:id]).closed?
-            DailyRation.where(sprint_id: params[:id])
+          DailyRation.where(sprint_id: params[:id])
           # else
           #   error!({:errors => "This sprint is pending"}, 422)
           # end

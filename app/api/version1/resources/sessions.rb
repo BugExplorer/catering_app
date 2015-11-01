@@ -4,6 +4,10 @@ module API
   module Version1
     class Sessions < Grape::API
       version 'v1', using: :path
+      format :json
+      default_format :json
+      default_error_formatter :json
+      content_type :json, 'application/json'
 
       resource :sessions do
         desc "Authenticate user and return user object / access token"
@@ -13,7 +17,7 @@ module API
           requires :password, type: String, desc: "User Password"
         end
 
-        post do
+        get '/' do
           email = params[:email]
           password = params[:password]
 
@@ -33,8 +37,7 @@ module API
 
           if user.valid_password?(password)
             user.save
-            headers['X-Auth-Token'] = user.authentication_token
-            { status: 'OK' }.to_json
+            { auth: true, auth_token: user.authentication_token }
           else
             error!({ error_code: 404,
                      error_message: "Invalid Email or Password." }, 401)

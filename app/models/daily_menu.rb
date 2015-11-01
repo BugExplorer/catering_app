@@ -9,7 +9,7 @@ class DailyMenu < ActiveRecord::Base
 
   private
 
-    def  delete_nils_in_dish_ids
+    def delete_nils_in_dish_ids
       self.dish_ids = self.dish_ids.select { |item| !item.nil? }
     end
 end

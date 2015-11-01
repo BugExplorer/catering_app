@@ -17,6 +17,7 @@ gem 'aasm', '~> 4.3'
 gem 'grape', '~> 0.13.0'
 gem 'grape_logging', '~> 1.1', '>= 1.1.2'
 gem 'grape-swagger', '~> 0.10.2'
+gem 'rack-cors', '~> 0.4.0'
 
 group :development do
   gem 'web-console', '~> 2.0'

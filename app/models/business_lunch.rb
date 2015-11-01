@@ -4,7 +4,7 @@ class BusinessLunch < Dish
 
   private
 
-    def  delete_nils_in_children_ids
+    def delete_nils_in_children_ids
       self.children_ids = self.children_ids.select { |item| !item.nil? }
     end
 end

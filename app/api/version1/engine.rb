@@ -10,11 +10,11 @@ module API
       format :json
       default_format :json
       default_error_formatter :json
-      content_type :json, "application/json"
+      content_type :json, 'application/json'
       version 'v1', using: :path
 
       # before do
-      #   error!("401 Unauthorized", 401) unless authenticated
+      #   error!("401 Unauthorized", 401) unless user_logged_in?
       # end
 
       use ActionDispatch::RemoteIp
