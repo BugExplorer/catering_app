@@ -37,7 +37,9 @@ module API
 
           if user.valid_password?(password)
             user.save
-            { auth: true, auth_token: user.authentication_token }
+            { auth: true,
+              auth_token: user.authentication_token,
+              name: user.name }
           else
             error!({ error_code: 404,
                      error_message: "Invalid Email or Password." }, 401)
