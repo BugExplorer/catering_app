@@ -30,4 +30,5 @@ group :development, :test do
   gem 'factory_girl_rails', '~> 4.5'
   gem 'database_cleaner', '~> 1.4', '>= 1.4.1'
   gem 'fuubar', '~> 2.0'
+  gem 'api_matchers'
 end

@@ -30,9 +30,9 @@ RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
+  config.include APIMatchers::RSpecMatchers
+  config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: /spec\/api/
+
   config.use_transactional_fixtures = true
 
   config.before(:suite) do

@@ -55,6 +55,10 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    api_matchers (0.6.2)
+      activesupport (>= 3.2.5)
+      nokogiri (>= 1.5.2)
+      rspec (>= 3.1)
     arbre (1.0.3)
       activesupport (>= 3.0.0)
     arel (6.0.3)
@@ -272,6 +276,7 @@ PLATFORMS
 DEPENDENCIES
   aasm (~> 4.3)
   activeadmin!
+  api_matchers
   coffee-rails (~> 4.1.0)
   database_cleaner (~> 1.4, >= 1.4.1)
   devise (~> 3.5, >= 3.5.1)
