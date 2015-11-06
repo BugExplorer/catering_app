@@ -17,7 +17,7 @@ module API
           requires :password, type: String, desc: "User Password"
         end
 
-        get '/' do
+        post do
           email = params[:email]
           password = params[:password]
 
