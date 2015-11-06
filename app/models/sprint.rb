@@ -4,6 +4,9 @@ class Sprint < ActiveRecord::Base
   validates :title, presence: true, length: { maximum: 45 }
   validates :started_at, presence: true
   validates :closed_at, presence: true
+  validates :state, presence: true
+
+  has_many :daily_rations
 
   aasm column: 'state' do
     state :pending, initial: true

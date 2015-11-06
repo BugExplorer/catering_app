@@ -6,8 +6,7 @@ ActiveAdmin.register DailyMenu do
     f.inputs "Business Lunch" do
       f.input :day_number
       f.input :max_total
-      f.input :dish_ids, as: :select, input_html: { multiple: true },
-                         collection: Dish.all
+      f.input :dish_ids, as: :select, multiple: true, collection: Dish.all
     end
     f.actions
   end

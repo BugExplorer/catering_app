@@ -1,10 +1,8 @@
 class BusinessLunch < Dish
   validates :children_ids, presence: true
-  before_save :delete_nils_in_children_ids
 
-  private
-
-    def delete_nils_in_children_ids
-      self.children_ids = self.children_ids.select { |item| !item.nil? }
-    end
+  # Multiply select can return an empty elements, so we need to reject them.
+  before_validation do |model|
+    model.children_ids.reject!(&:blank?) if model.children_ids
+  end
 end

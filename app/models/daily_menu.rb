@@ -3,11 +3,8 @@ class DailyMenu < ActiveRecord::Base
   validates :max_total, numericality: { greater_than_or_equal_to: 0 }
   validates :dish_ids, presence: true
 
-  before_save :delete_nils_in_dish_ids
-
-  private
-
-    def delete_nils_in_dish_ids
-      self.dish_ids = self.dish_ids.select { |item| !item.nil? }
-    end
+  # Multiply select can return an empty elements, so we need to reject them.
+  before_validation do |model|
+    model.dish_ids.reject!(&:blank?) if model.dish_ids
+  end
 end
