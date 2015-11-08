@@ -17,6 +17,17 @@ module API
           Sprint.where(state: ['running', 'closed'])
         end
 
+        desc 'Returns sprint by id', headers: {
+          'X-Auth-Token' => {
+            description: 'User token',
+            required: true
+          }
+        }
+
+        get '/:id' do
+          Sprint.find(params[:id])
+        end
+
         desc 'Returns daily rations for that sprint', headers: {
           'X-Auth-Token' => {
             description: 'User token',

@@ -5,6 +5,7 @@ module API
     autoload :Helpers, 'version1/resources/helpers'
     autoload :Sessions, 'version1/resources/sessions'
     autoload :Sprints, 'version1/resources/sprints'
+    autoload :DailyMenus, 'version1/resources/daily_menus'
 
     class Engine < ::Grape::API
       format :json
@@ -13,21 +14,20 @@ module API
       content_type :json, 'application/json'
       version 'v1', using: :path
 
-      # before do
-      #   error!("401 Unauthorized", 401) unless user_logged_in?
-      # end
-
       use ActionDispatch::RemoteIp
 
       helpers API::Version1::Helpers
 
       mount API::Version1::Sessions
       mount API::Version1::Sprints
+      mount API::Version1::DailyMenus
 
-      add_swagger_documentation base_path: "/api", hide_documentation_path: true, api_version: "v1"
+      add_swagger_documentation base_path: '/api',
+                                hide_documentation_path: true,
+                                api_version: 'v1'
 
-      get "/" do
-        {:timenow => Time.zone.now.to_i }
+      get '/' do
+        { timenow: Time.zone.now.to_i }
       end
     end
   end

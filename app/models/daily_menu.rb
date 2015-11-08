@@ -7,4 +7,6 @@ class DailyMenu < ActiveRecord::Base
   before_validation do |model|
     model.dish_ids.reject!(&:blank?) if model.dish_ids
   end
+
+  default_scope -> { order(day_number: :asc) }
 end
