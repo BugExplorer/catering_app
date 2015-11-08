@@ -14,20 +14,24 @@ module API
         }
 
         get '/' do
-          response = DailyMenu.all.as_json(except: [:created_at, :updated_at])
-          categories = Category.all
-                       .as_json(except: [:created_at, :updated_at])
-          response.each do |resp|
+          menus = DailyMenu.all.as_json(except: [:created_at, :updated_at])
+          menus.each do |resp|
+            categories = Category.all
+                         .as_json(except: [:created_at, :updated_at])
+
+            dishes = Dish.find(resp['dish_ids'])
+            grouped_dishes = dishes.group_by { |d| d['category_id'] }
+
             # Create categories array node for each DailyMenu
             resp['categories'] = categories
-            # Create dishes array node for each Category
-            dishes = Dish.find(resp['dish_ids'])
             resp['categories'].each do |category|
               category['dishes'] =
-                dishes
-                .select { |dish| dish.category_id == category['id'] }
+                grouped_dishes[category['id']]
                 .as_json(except: [:sort_order, :created_at, :updated_at])
             end
+
+            # Delete empty categories
+            resp['categories'].reject! { |cat| !cat['dishes'] }
             # There are no sense to store dish_ids
             resp.delete('dish_ids')
           end
