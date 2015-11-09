@@ -17,6 +17,16 @@ module API
           Sprint.where(state: ['running', 'closed'])
         end
 
+        desc 'Creates order', headers: {
+          'X-Auth-Token' => {
+            description: 'User token',
+            required: true
+          }
+        }
+
+        post '/:id/daily_rations' do
+        end
+
         desc 'Returns sprint by id', headers: {
           'X-Auth-Token' => {
             description: 'User token',
