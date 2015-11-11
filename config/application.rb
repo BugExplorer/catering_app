@@ -33,6 +33,11 @@ module CateringApp
       end
     end
 
+    config.middleware.insert_after ActionDispatch::Flash, Warden::Manager do |manager|
+      manager.default_strategies :authentication_token
+      manager.failure_app = API::FailureApp
+    end
+
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
   end

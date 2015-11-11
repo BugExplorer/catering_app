@@ -25,6 +25,7 @@ module API
         }
 
         post '/:id/daily_rations' do
+          authenticate_by_token!
         end
 
         desc 'Returns sprint by id', headers: {
@@ -35,18 +36,8 @@ module API
         }
 
         get '/:id' do
+          authenticate_by_token!
           Sprint.find(params[:id])
-        end
-
-        desc 'Returns daily rations for that sprint', headers: {
-          'X-Auth-Token' => {
-            description: 'User token',
-            required: true
-          }
-        }
-
-        get '/:id/rations' do
-          DailyRation.where(sprint_id: params[:id])
         end
       end
     end
