@@ -1,4 +1,4 @@
-class FormModelsStorage
+class FormContent
   # Returns DailyMenus, where each day has categorized dishes
   def self.get_data
     menus = DailyMenu.all.as_json(except: [:created_at, :updated_at])

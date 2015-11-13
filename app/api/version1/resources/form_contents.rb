@@ -2,10 +2,10 @@ require 'grape'
 
 module API
   module Version1
-    class DailyMenus < ::Grape::API
+    class FormContents < ::Grape::API
       version 'v1', using: :path
 
-      resource :daily_menus do
+      resource :form_contents do
         desc '# Returns daily menus, where each day has categorized dishes', headers: {
           'X-Auth-Token' => {
             description: 'User token',
@@ -16,7 +16,7 @@ module API
         get '/' do
           authenticate_by_token!
           # get FormModelsStorage
-          FormModelsStorage.get_data
+          FormContent.get_data
         end
       end
     end
