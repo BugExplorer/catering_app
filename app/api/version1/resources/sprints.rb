@@ -14,6 +14,7 @@ module API
         }
 
         get '/' do
+          authenticate_by_token!
           Sprint.where(state: ['running', 'closed'])
         end
 

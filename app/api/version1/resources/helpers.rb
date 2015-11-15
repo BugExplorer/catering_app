@@ -14,7 +14,8 @@ module API
       end
 
       def authenticate_by_token!
-        warden.authenticate!
+        env['devise.skip_trackable'] = true
+        warden.authenticate!(:api_authentication)
       end
 
       def client_ip

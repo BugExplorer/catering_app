@@ -1,3 +1,0 @@
-require Rails.root.join('lib/strategies/authentication_token_strategy').to_s
-
-Warden::Strategies.add(:authentication_token, AuthenticationTokenStrategy)
