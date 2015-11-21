@@ -34,26 +34,35 @@ module API
         post '/:id/daily_rations' do
           authenticate_by_token!
 
-          sprint_id = Sprint.find(params[:id]).id
-          user_id   = current_user.id
+          sprint = Sprint.find(params[:id])
+          dishes = Dish.select(:id, :price).as_json
+          # Convert dishes to the hash (:dish_id => :price)
+          # To optimize amount of db requests
+          dishes_hash = Hash[dishes.map(&:values).map(&:flatten)]
+          user_id = current_user.id
 
-          daily_rations = params[:days].map do |day|
-            # get daily menu id from the hash
+          daily_rations = []
+          params[:days].each do |day|
+            # Get daily menu id from the hash
             daily_menu_id = day[0].to_i
-            # iterate through dish => quanity hash
-            day[1].map do |dish|
-              # get dish id and his quanity from the dishes array
-              dish_id  = dish[0]
-              quantity = dish[1]
-              dish_price = Dish.find(dish_id).price
-              DailyRation.new(price: dish_price,
-                              quantity: quantity,
-                              user_id: user_id,
-                              daily_menu_id: daily_menu_id,
-                              sprint_id: sprint_id,
-                              dish_id: dish_id)
+            # Iterate through dish => quanity hash
+            daily_rations = day[1].map do |dish|
+              # Get dish id and his quanity from the dishes array
+              dish_id = dish[0]
+              dish_quantity = dish[1]
+              # Get dish price from tha hash
+              dish_price = dishes_hash[dish_id]
+              DailyRation.new(daily_menu_id: daily_menu_id,
+                              dish_id:       dish_id,
+                              price:         dish_price,
+                              quantity:      dish_quantity,
+                              user_id:       user_id,
+                              sprint_id:     sprint.id)
             end
           end
+
+          # Push that as one db request
+          DailyRation.import daily_rations, validate: true
         end
 
         desc 'Returns sprint by id', headers: {
