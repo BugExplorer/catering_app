@@ -1,4 +1,4 @@
-require "grape"
+require 'grape'
 
 module API
   module Version1

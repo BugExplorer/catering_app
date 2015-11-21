@@ -2,9 +2,9 @@ require 'action_dispatch/middleware/remote_ip.rb'
 
 module API
   module Version1
-    autoload :Helpers, 'version1/resources/helpers'
-    autoload :Sessions, 'version1/resources/sessions'
-    autoload :Sprints, 'version1/resources/sprints'
+    autoload :Helpers,      'version1/resources/helpers'
+    autoload :Sessions,     'version1/resources/sessions'
+    autoload :Sprints,      'version1/resources/sprints'
     autoload :FormContents, 'version1/resources/form_contents'
 
     class Engine < ::Grape::API

@@ -1,5 +1,5 @@
-require "grape"
-require "warden"
+require 'grape'
+require 'warden'
 
 module API
   class UnauthorizedError < StandardError; end
