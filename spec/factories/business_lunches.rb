@@ -1,8 +1,6 @@
 FactoryGirl.define do
-  factory :business_lunch do
-    title 'Pro'
-    description 'Test'
-    price 12.0
+  factory :business_lunch, parent: :dish, class: 'BusinessLunch' do
     type 'BusinessLunch'
+    category
   end
 end

@@ -1,4 +1,5 @@
 require 'factory_girl_rails'
+require 'rspec/json_expectations'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

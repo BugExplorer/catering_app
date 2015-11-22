@@ -1,22 +1,47 @@
 require 'rails_helper'
 describe API::Version1::Engine do
-  describe 'GET /api/v1/sprints' do
-    it 'returns list of all sprints' do
-      FactoryGirl.create(:sprint, title: "Test sprint")
+  let(:user) { FactoryGirl.create :user }
+  let!(:sprint) { FactoryGirl.create(:sprint, title: 'Test sprint') }
 
-      get '/api/v1/sprints'
-      expect(response.status).to eq 200
-      expect(response.body).to have_node(:title).with("Test sprint")
+  describe 'GET /api/v1/sprints/:id' do
+    context 'when not authenticated' do
+      it do
+        get "/api/v1/sprints/#{sprint.id}"
+        json = JSON.parse(response.body)
+        expect(response.status).to eq 401
+        expect(json['message']).to eq 'Unauthorized'
+      end
     end
 
-    it 'returns rations for specific sprint' do
-      _sprint = FactoryGirl.create(:sprint)
-      FactoryGirl.create(:daily_ration, sprint_id: _sprint.id, price: 12.3)
+    context 'when authenticated' do
+      let!(:first_sprint) { FactoryGirl.create(:sprint, title: 'First') }
+      let!(:second_sprint) { FactoryGirl.create(:sprint, title: 'Second') }
+      it 'returns a sprint by id' do
+        get "/api/v1/sprints/#{sprint.id}", nil,
+            'X-Auth-Token' => user.authentication_token
+        expect(response.status).to eq 200
+        expect(response.body).to eq sprint.to_json
+      end
+    end
+  end
 
-      get "/api/v1/sprints/#{_sprint.id}/rations"
-      expect(response.status).to eq 200
-      expect(response.body).to have_node(:sprint_id).with(_sprint.id)
-      expect(response.body).to have_node(:price).with(12.3)
+  describe 'GET /api/v1/sprints' do
+    context 'when not authenticated' do
+      it do
+        get '/api/v1/sprints'
+        json = JSON.parse(response.body)
+        expect(response.status).to eq 401
+        expect(json['message']).to eq 'Unauthorized'
+      end
+    end
+
+    context 'when authenticated' do
+      it do
+        FactoryGirl.create(:sprint)
+        get '/api/v1/sprints', nil,
+            'X-Auth-Token' => user.authentication_token
+        expect(response.status).to eq 200
+      end
     end
   end
 end

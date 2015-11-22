@@ -5,6 +5,7 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
+require 'devise'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -32,6 +33,7 @@ RSpec.configure do |config|
 
   config.include APIMatchers::RSpecMatchers
   config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: /spec\/api/
+  config.include Devise::TestHelpers, type: :controller
 
   config.use_transactional_fixtures = true
 
@@ -43,7 +45,7 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
-  config.before(:each, :js => true) do
+  config.before(:each, js: true) do
     DatabaseCleaner.strategy = :truncation
   end
 

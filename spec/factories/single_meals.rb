@@ -1,8 +1,5 @@
 FactoryGirl.define do
-  factory :single_meal do
-    title 'Hamburger'
-    description 'Description'
-    price 1.2
+  factory :single_meal, parent: :dish, class: 'SingleMeal' do
     type 'SingleMeal'
   end
 end

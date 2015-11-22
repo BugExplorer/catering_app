@@ -10,11 +10,11 @@ module API
       content_type :json, 'application/json'
 
       resource :sessions do
-        desc "Authenticate user and return user object / access token"
+        desc 'Authenticate user and return user object / access token'
 
         params do
-          requires :email, type: String, desc: "User email"
-          requires :password, type: String, desc: "User Password"
+          requires :email, type: String, desc: 'User email'
+          requires :password, type: String, desc: 'User Password'
         end
 
         post do
@@ -23,7 +23,7 @@ module API
 
           if email.nil? || password.nil?
             error!({ error_code: 404,
-                     error_message: "Invalid Email or Password." }, 401)
+                     error_message: 'Invalid Email or Password.' }, 401)
             return
           end
 
@@ -31,32 +31,32 @@ module API
 
           if user.nil?
             error!({ error_code: 404,
-                     error_message: "Invalid Email or Password." }, 401)
+                     error_message: 'Invalid Email or Password.' }, 401)
             return
           end
 
           if user.valid_password?(password)
             user.save
-            { auth: true,
-              auth_token: user.authentication_token,
+            { auth_token: user.authentication_token,
               name: user.name }
           else
             error!({ error_code: 404,
-                     error_message: "Invalid Email or Password." }, 401)
+                     error_message: 'Invalid Email or Password.' }, 401)
             return
           end
         end
 
-        desc "Destroy the access token", headers: {
-          "X-Auth-Token" => {
-            description: "User token",
+        desc 'Destroy the access token', headers: {
+          'X-Auth-Token' => {
+            description: 'User token',
             required: true
           }
         }
 
         delete '/' do
           authenticate_by_token!
-          user.reset_authentication_token
+          current_user.reset_authentication_token
+          current_user.save
         end
       end
     end
