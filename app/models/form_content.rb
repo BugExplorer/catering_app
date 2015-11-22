@@ -3,11 +3,14 @@ class FormContent
   def self.get_data
     menus = DailyMenu.all.as_json(except: [:created_at, :updated_at])
     categories = Category.all
+    dishes_collection = Dish.all.to_a
 
     menus.each do |menu|
       menu_categories = categories.as_json(except: [:created_at, :updated_at])
 
-      dishes = Dish.find(menu['dish_ids'])
+      dishes = dishes_collection.select do |d|
+        menu['dish_ids'].include? d.id
+      end
       grouped_dishes = dishes.group_by { |d| d['category_id'] }
 
       # Create categories array node for each DailyMenu
