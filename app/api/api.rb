@@ -3,6 +3,7 @@ require 'warden'
 
 module API
   class UnauthorizedError < StandardError; end
+  class OrderError < StandardError; end
 
   autoload :Logger, 'utils/logger'
   autoload :FailureApp, 'utils/failure_app'
@@ -26,6 +27,10 @@ module API
 
     rescue_from UnauthorizedError do |e|
       Rack::Response.new({'errors' => 'Invalid API public token', 'message' => 'Unauthorized'}.to_json, 401, {'Content-Type' => 'application/json'})
+    end
+
+    rescue_from OrderError do |e|
+      Rack::Response.new({'errors' => "Order error", 'message' => "You can't order in this sprint"}.to_json, 400, {'Content-Type' => 'application/json'})
     end
 
     use API::Logger

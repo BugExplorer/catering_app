@@ -36,31 +36,26 @@ module API
 
           sprint = Sprint.find(params[:id])
           user_id = current_user.id
-          dishes = Dish.select(:id, :price).as_json
-          # Convert dishes to the hash (:dish_id => :price)
-          # To optimize amount of db requests
-          dishes_hash = Hash[dishes.map(&:values).map(&:flatten)]
-
-          daily_menus = DailyMenu.select(:id, :max_total).as_json
-          # Convert daily menus to the hash (:id => :max_total)
-          daily_menus_hash = Hash[daily_menus.map(&:values).map(&:flatten)]
+          dishes = Dish.select(:id, :price).to_a
+          daily_menus = DailyMenu.select(:id, :max_total).to_a
 
           daily_rations = []
           params[:days].each do |day|
             total_price = 0
             # Get daily menu id from the hash
             daily_menu_id = day[0].to_i
+            daily_menu = daily_menus.select { |d| d.id == daily_menu_id }.first
             # Iterate through dish => quanity hash
             # Break if one of the total prices is bigger than day's
             break unless day[1].each do |dish|
               # Get dish id and its quanity from the dishes array
               dish_id = dish[0].to_i
               dish_quantity = dish[1].to_i
-              # Get dish price from tha hash
-              dish_price = dishes_hash[dish_id]
+              # Get the dish form array
+              dish_price = dishes.select { |d| d.id == dish_id }.first.price
               total_price += dish_price
               # Check if total price is bigger than day limit
-              if total_price >= daily_menus_hash[daily_menu_id]
+              if total_price >= daily_menu.max_total
                 daily_rations = nil
                 break
               else
@@ -75,7 +70,12 @@ module API
           end
 
           # Push that as one db request
-          DailyRation.import daily_rations, validate: true if daily_rations
+          if daily_rations && DailyRation.find(user_id: user_id,
+                                               sprint_id: sprint.id)
+            DailyRation.import daily_rations, validate: true
+          else
+            fail OrderError
+          end
         end
 
         desc 'Returns sprint by id', headers: {
