@@ -4,10 +4,9 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { sessions: 'users/sessions',
                                     registrations: 'users/registrations',
-                                    passwords: 'users/passwords'
-                                  }
+                                    passwords: 'users/passwords' }
   devise_scope :user do
-    get 'login', to: 'devise/sessions#new'
+    # get 'login', to: 'devise/sessions#new'
     authenticated :user do
       root to: 'admin/dashboard#index', as: :authenticated_root
     end

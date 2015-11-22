@@ -22,11 +22,6 @@ module API
       mount API::Version1::Sprints
       mount API::Version1::FormContents
 
-      use Warden::Manager do |manager|
-        manager.default_strategies :api_authentication
-        manager.failure_app = API::FailureApp
-      end
-
       add_swagger_documentation base_path: '/api',
                                 hide_documentation_path: true,
                                 api_version: 'v1'

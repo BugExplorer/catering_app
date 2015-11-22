@@ -2,11 +2,11 @@ module API
   module Version1
     module Helpers
       def warden
-        request.env['warden']
+        env['warden']
       end
 
       def current_user
-        warden.user
+        warden.user || @user
       end
 
       def user_logged_in?
@@ -14,8 +14,10 @@ module API
       end
 
       def authenticate_by_token!
-        env['devise.skip_trackable'] = true
-        warden.authenticate!(:api_authentication)
+        # return true if warden.authenticated?
+        token = request.headers['X-Auth-Token']
+        @user = User.find_by_authentication_token(token)
+        fail UnauthorizedError unless token && @user
       end
 
       def client_ip

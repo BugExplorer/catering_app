@@ -15,7 +15,6 @@ module API
 
         get '/' do
           authenticate_by_token!
-          # get FormModelsStorage
           FormContent.get_data
         end
       end
