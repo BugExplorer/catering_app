@@ -7,6 +7,9 @@ class DailyRation < ActiveRecord::Base
   validates :sprint_id, numericality: { greater_than_or_equal_to: 1 }
   validates :daily_menu_id, numericality: { greater_than_or_equal_to: 1 }
 
+  # User can order only once per sprint
+  validates :user, uniqueness: { scope: :sprint }
+
   belongs_to :user
   belongs_to :daily_menu
   belongs_to :sprint

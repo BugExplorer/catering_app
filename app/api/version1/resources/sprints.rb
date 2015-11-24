@@ -18,6 +18,20 @@ module API
           Sprint.where(state: ['running', 'closed'])
         end
 
+        desc 'Returns daily rations by sprint with associated dish', headers: {
+          'X-Auth-Token' => {
+            description: 'User token',
+            required: true
+          }
+        }
+
+        get '/:id/daily_rations' do
+          authenticate_by_token!
+          DailyRation.includes(:dish)
+            .where(user_id: current_user.id, sprint_id: params[:id])
+            .as_json include: { dish: { only: :title } }
+        end
+
         desc 'Creates order', headers: {
           'X-Auth-Token' => {
             description: 'User token',
@@ -44,18 +58,22 @@ module API
             total_price = 0
             # Get daily menu id from the hash
             daily_menu_id = day[0].to_i
-            daily_menu = daily_menus.select { |d| d.id == daily_menu_id }.first
-            # Iterate through dish => quanity hash
+            daily_menu = daily_menus.find { |d| d.id == daily_menu_id }
+
+            # Iterate through dish => quantity hash
             # Break if one of the total prices is bigger than day's
             break unless day[1].each do |dish|
-              # Get dish id and its quanity from the dishes array
+              # Get dish id and its quantity from the dishes array
               dish_id = dish[0].to_i
               dish_quantity = dish[1].to_i
-              # Get the dish form array
-              dish_price = dishes.select { |d| d.id == dish_id }.first.price
+
+              # Get the dish the form array
+              dish_price = dishes.find { |d| d.id == dish_id }.price
+              dish_price = dish_price * dish_quantity
               total_price += dish_price
+
               # Check if total price is bigger than day limit
-              if total_price >= daily_menu.max_total
+              if total_price >= daily_menu.max_total || dish_quantity < 1
                 daily_rations = nil
                 break
               else
@@ -70,11 +88,11 @@ module API
           end
 
           # Push that as one db request
-          if daily_rations && DailyRation.find(user_id: user_id,
-                                               sprint_id: sprint.id)
-            DailyRation.import daily_rations, validate: true
-          else
-            fail OrderError
+          request = DailyRation.import daily_rations, validate: true
+
+          unless request.failed_instances.empty?
+            error!({ error_code: 400,
+                     error_message: 'Order error.' }, 400)
           end
         end
 

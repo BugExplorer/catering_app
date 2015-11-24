@@ -6,6 +6,7 @@ module API
     autoload :Sessions,     'version1/resources/sessions'
     autoload :Sprints,      'version1/resources/sprints'
     autoload :FormContents, 'version1/resources/form_contents'
+    autoload :DailyMenus, 'version1/resources/daily_menus'
 
     class Engine < ::Grape::API
       format :json
@@ -21,6 +22,7 @@ module API
       mount API::Version1::Sessions
       mount API::Version1::Sprints
       mount API::Version1::FormContents
+      mount API::Version1::DailyMenus
 
       add_swagger_documentation base_path: '/api',
                                 hide_documentation_path: true,
