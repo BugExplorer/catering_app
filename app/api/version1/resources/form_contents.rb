@@ -16,7 +16,7 @@ module API
 
         get '/' do
           authenticate_by_token!
-          FormContent.get_data
+          get_daily_categorized_dishes # Query Helper
         end
       end
     end

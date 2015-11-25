@@ -1,5 +1,5 @@
-ActiveAdmin.register_page "Sprint Report" do
-  sprint = Sprint.running.last
+ActiveAdmin.register_page "Running Sprint Report" do
+  sprint = Sprint.running.first
   daily_rations = DailyRation.includes(:dish, :daily_menu)
     .where(sprint_id: sprint.id).to_a
   days = DailyMenu.all.to_a
@@ -7,7 +7,7 @@ ActiveAdmin.register_page "Sprint Report" do
   content do
     panel "#{sprint.title}" do
       table_for User.all do
-        column('Name') { |u| u.name.capitalize }
+        column('Name') { |u| u.name }
         column('Sprint') { sprint.title }
         column('Daily Rations') do |u|
           ul do
@@ -17,15 +17,17 @@ ActiveAdmin.register_page "Sprint Report" do
               end
 
               li "#{Date::DAYNAMES[day.day_number]} limit: #{day.max_total}"
+
               unless current_day.empty?
                 ul do
                   current_day.map do |ration|
-                    unless ration.dish.nil?
-                      li "#{ration.dish.title} price: #{ration.price}"
-                    end #unless
+                    if !ration.dish.nil?
+                      li("#{ration.dish.title} price: #{ration.price}")
+                    end
                   end # map
                 end # ul
               end # unless
+
             end # days.map
           end # ul
         end # column
