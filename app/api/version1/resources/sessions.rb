@@ -18,6 +18,7 @@ module API
         end
 
         post do
+          { 'declared_params' => declared(params, include_missing: false) }
           email = params[:email]
           password = params[:password]
 

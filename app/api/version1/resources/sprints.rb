@@ -47,6 +47,7 @@ module API
 
         post '/:id/daily_rations' do
           authenticate_by_token!
+          { 'declared_params' => declared(params, include_missing: false) }
           save_order! Sprint.find(params[:id]) # Query Helper
         end
 

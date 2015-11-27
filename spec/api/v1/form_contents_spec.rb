@@ -8,7 +8,7 @@ describe API::Version1::Engine do
         get '/api/v1/form_contents'
         json = JSON.parse(response.body)
         expect(response.status).to eq 401
-        expect(json['message']).to eq 'Unauthorized'
+        expect(json['message']).to eq 'Unauthenticated'
       end
     end
 

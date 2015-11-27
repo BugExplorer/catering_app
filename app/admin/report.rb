@@ -1,10 +1,10 @@
 ActiveAdmin.register_page "Running Sprint Report" do
-  sprint = Sprint.running.first
-  daily_rations = DailyRation.includes(:dish, :daily_menu)
-    .where(sprint_id: sprint.id).to_a
-  days = DailyMenu.all.to_a
-
   content do
+    sprint = Sprint.running.first
+    daily_rations = DailyRation.includes(:dish, :daily_menu)
+      .where(sprint_id: sprint.id).to_a
+    days = DailyMenu.all.to_a
+
     panel "#{sprint.title}" do
       table_for User.all do
         column('Name') { |u| u.name }

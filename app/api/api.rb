@@ -30,7 +30,7 @@ module API
 
     rescue_from UnauthorizedError do |e|
       Rack::Response.new({'errors' => 'Invalid API public token',
-                          'message' => 'Unauthorized'}.to_json,
+                          'message' => 'Unauthenticated'}.to_json,
                           401, {'Content-Type' => 'application/json'})
     end
 
