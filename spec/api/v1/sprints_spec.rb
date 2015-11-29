@@ -36,7 +36,6 @@ describe API::Version1::Engine do
 
     context 'when authenticated' do
       it do
-        FactoryGirl.create(:sprint)
         get '/api/v1/sprints', nil,
             'X-Auth-Token' => user.authentication_token
         expect(response.status).to eq 200
@@ -76,9 +75,9 @@ describe API::Version1::Engine do
     end
 
     context 'when authenticated' do
-      let(:dish) { FactoryGirl.create(:single_meal) }
-      let(:daily_menu) { FactoryGirl.create(:daily_menu,
-                                            dish_ids: [dish.id]) }
+      let!(:dish) { FactoryGirl.create(:single_meal) }
+      let!(:daily_menu) { FactoryGirl.create(:daily_menu,
+                                             dish_ids: [dish.id]) }
 
       it 'is invalid with wrong params' do
         params = {
@@ -92,8 +91,18 @@ describe API::Version1::Engine do
       end
 
       it 'is saves daily rations' do
+        FactoryGirl.create(:single_meal)
+
         params = {
-          "days" => { daily_menu.id => { dish.id =>"1"} }
+          "days" => {
+            daily_menu.id => { "0" =>
+              {
+                "dish_id"       => dish.id,
+                "dish_price"    => dish.price,
+                "quantity" => 1
+              }
+            }
+          }
         }
         post "/api/v1/sprints/#{sprint.id}/daily_rations", params,
             'X-Auth-Token' => user.authentication_token

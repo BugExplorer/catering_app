@@ -31,31 +31,10 @@ RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
-  config.include APIMatchers::RSpecMatchers
   config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: /spec\/api/
   config.include Devise::TestHelpers, type: :controller
 
   config.use_transactional_fixtures = true
-
-  config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
-  end
-
-  config.before(:each, js: true) do
-    DatabaseCleaner.strategy = :truncation
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
 
   config.infer_spec_type_from_file_location!
 end

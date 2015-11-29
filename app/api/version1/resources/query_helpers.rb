@@ -43,19 +43,17 @@ module API
           # Get daily menu id from the hash
           daily_menu_id = day[0].to_i
           daily_menu = daily_menus.find { |d| d.id == daily_menu_id }
-
-          # Iterate through dish => quantity hash
+          # Iterate through day's dishes
           # Break if one of the total prices is bigger than day's
           break unless day[1].each do |dish|
-            # Get dish id and its quantity from the dishes array
-            dish_id = dish[0].to_i
-            dish_quantity = dish[1].to_i
+            dish = dish[1]
+            dish_id = dish['dish_id'].to_i
+            dish_quantity = dish['quantity'].to_i
 
             # Get the dish the form array
             dish_price = dishes.find { |d| d.id == dish_id }.price
             dish_price = dish_price * dish_quantity
             total_price += dish_price
-
             # Check if total price is bigger than day limit
             if total_price >= daily_menu.max_total || dish_quantity < 1
               daily_rations = nil
@@ -70,14 +68,18 @@ module API
             end
           end
         end
-
         # Push that as one db request
-        request = DailyRation.import daily_rations, validate: true
-
-        unless request.failed_instances.empty?
+        if daily_rations
+          request = DailyRation.import daily_rations, validate: true
+          unless request.failed_instances.empty?
+            error!({ error_code: 400,
+                     error_message: 'Order error!' }, 400)
+          end
+        else
           error!({ error_code: 400,
-                   error_message: 'Order error.' }, 400)
+                   error_message: 'Total price is bigger than limit!' }, 400)
         end
+
       end
     end
   end
