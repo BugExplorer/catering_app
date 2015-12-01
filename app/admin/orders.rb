@@ -1,4 +1,4 @@
-ActiveAdmin.register_page "Running Sprint Report" do
+ActiveAdmin.register_page "Current Orders" do
   content do
     sprint = Sprint.running.first
     daily_rations = DailyRation.includes(:dish, :daily_menu)
@@ -7,6 +7,7 @@ ActiveAdmin.register_page "Running Sprint Report" do
 
     panel "#{sprint.title}" do
       table_for User.all do
+
         column('Name') { |u| u.name }
         column('Sprint') { sprint.title }
         column('Daily Rations') do |u|

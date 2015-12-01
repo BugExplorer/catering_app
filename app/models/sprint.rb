@@ -8,6 +8,8 @@ class Sprint < ActiveRecord::Base
 
   has_many :daily_rations
 
+  default_scope -> { order(id: :asc) }
+
   aasm column: 'state' do
     state :pending, initial: true
     state :running

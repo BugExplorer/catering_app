@@ -19,7 +19,8 @@ gem 'grape-swagger',             '~> 0.10.2'
 gem 'rack-cors',                 '~> 0.4.0'
 gem 'activerecord-import',       '~> 0.10.0'
 
-gem 'activeadmin', github: 'activeadmin'
+gem 'activeadmin',               github: 'activeadmin'
+gem 'active_admin_theme',        '~> 1.0', '>= 1.0.2'
 
 group :development do
   gem 'web-console',             '~> 2.0'
