@@ -21,6 +21,9 @@ gem 'activerecord-import',       '~> 0.10.0'
 gem 'activeadmin',               github: 'activeadmin'
 gem 'active_admin_theme',        '~> 1.0', '>= 1.0.2'
 
+gem 'populator',                 '~> 1.0'
+gem 'faker',                     '~> 1.6', '>= 1.6.1'
+
 group :production do
   gem 'puma',                     '~> 2.15', '>= 2.15.3'
 end
@@ -38,5 +41,4 @@ group :development, :test do
   gem 'database_cleaner',        '~> 1.4', '>= 1.4.1'
   gem 'fuubar',                  '~> 2.0'
   gem 'api_matchers',            '~> 0.6.2'
-  gem 'faker',                   '~> 1.5'
 end
