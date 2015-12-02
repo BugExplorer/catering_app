@@ -15,12 +15,15 @@ gem 'aasm',                      '~> 4.3'
 
 gem 'grape',                     '~> 0.13.0'
 gem 'grape_logging',             '~> 1.1', '>= 1.1.2'
-gem 'grape-swagger',             '~> 0.10.2'
 gem 'rack-cors',                 '~> 0.4.0'
 gem 'activerecord-import',       '~> 0.10.0'
 
 gem 'activeadmin',               github: 'activeadmin'
 gem 'active_admin_theme',        '~> 1.0', '>= 1.0.2'
+
+group :production do
+  gem 'puma',                     '~> 2.15', '>= 2.15.3'
+end
 
 group :development do
   gem 'web-console',             '~> 2.0'
