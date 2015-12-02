@@ -1,8 +1,9 @@
 require 'rails_helper'
 describe API::Version1::Engine do
-  let(:user) { FactoryGirl.create :user }
-  let!(:sprint) { FactoryGirl.create(:sprint, title: 'Test sprint') }
+  let!(:user) { FactoryGirl.create :user }
   let!(:daily_ration) { FactoryGirl.create(:daily_ration, sprint: sprint) }
+  let!(:sprint) { FactoryGirl.create(:sprint, title: 'Test sprint',
+                                              state: :running) }
 
   describe 'GET /api/v1/sprints/:id' do
     context 'when not authenticated' do
@@ -36,9 +37,17 @@ describe API::Version1::Engine do
 
     context 'when authenticated' do
       it do
+        FactoryGirl.create(:sprint, title: 'Another sprint', state: :closed)
+
         get '/api/v1/sprints', nil,
             'X-Auth-Token' => user.authentication_token
+        json = JSON.parse(response.body)
         expect(response.status).to eq 200
+        include_json([{
+          id:    sprint.id,
+          title: sprint.title,
+          state: sprint.state
+        }])
       end
     end
   end
@@ -55,9 +64,18 @@ describe API::Version1::Engine do
 
     context 'when authenticated' do
       it do
-        get "/api/v1/sprints/#{sprint.id}/daily_rations"
-        get '/api/v1/sprints', nil,
+        FactoryGirl.create(:daily_ration, sprint: sprint, price: 10)
+
+        get "/api/v1/sprints/#{sprint.id}/daily_rations", nil,
             'X-Auth-Token' => user.authentication_token
+
+        json = JSON.parse(response.body)
+        expect(response.status).to eq 200
+        include_json([{
+          id:       daily_ration.id,
+          price:    daily_ration.price,
+          quantity: daily_ration.quantity
+        }])
         expect(response.status).to eq 200
       end
     end
