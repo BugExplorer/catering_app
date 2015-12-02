@@ -35,7 +35,7 @@ ActiveAdmin.register_page "Current Orders" do
         end # table
       end # panel
     rescue
-      panel {}
+      panel "Empty Order"
     end
   end # content
 end
