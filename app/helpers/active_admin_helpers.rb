@@ -14,6 +14,7 @@ module ActiveAdminHelpers
                                  :updated_at, :description, :children_ids,
                                  :category_id])
       key[:quantity] = value
+      key[:total_price] = key['price'] * value
       report << key
     end
 
@@ -22,7 +23,7 @@ module ActiveAdminHelpers
 
   # Generates csv report from custom array of hashes
   def generate_report(array)
-    attributes = %w{title price quantity}
+    attributes = %w{title price quantity total_price}
 
     CSV.generate(headers: true) do |csv|
       csv << attributes
