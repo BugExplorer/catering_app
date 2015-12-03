@@ -26,6 +26,10 @@ module API
       mount API::Version1::FormContents
       mount API::Version1::DailyMenus
 
+      add_swagger_documentation base_path: '/api',
+                                hide_documentation_path: true,
+                                api_version: 'v1'
+
       get '/' do
         { timenow: Time.zone.now.to_i }
       end

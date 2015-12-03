@@ -117,7 +117,7 @@ describe API::Version1::Engine do
               {
                 "dish_id"       => dish.id,
                 "dish_price"    => dish.price,
-                "quantity" => 1
+                "quantity"      => 1
               }
             }
           }
