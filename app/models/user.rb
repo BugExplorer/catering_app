@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :registerable, :recoverable, :rememberable, :trackable, :validatable,
          :database_authenticatable
+
+  has_many :daily_rations
+  scope :ordered,     -> (sprint_id) { find(find_rations(sprint_id)) }
+  scope :not_ordered, -> (sprint_id) { where.not(id: find_rations(sprint_id)) }
 
   before_save :ensure_authentication_token
 
@@ -27,5 +29,10 @@ class User < ActiveRecord::Base
         token = Devise.friendly_token
         break token unless User.where(authentication_token: token).first
       end
+    end
+
+    def self.find_rations(sprint_id)
+      rations = DailyRation.includes(:user).where(sprint_id: sprint_id)
+      users = rations.map { |ration| ration.user.id }.uniq
     end
 end
